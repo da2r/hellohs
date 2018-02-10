@@ -1,0 +1,206 @@
+<legend>Rincian Barang</legend>
+
+<div class="row">
+	<div class="col-md-12">
+		<button class="btn btn-sm btn-outline-success" data-bind="click: openSelectItemDialog">
+			<i class="fa fa-plus"></i>
+			Masukkan Barang
+		</button>
+	</div>
+</div>
+
+<table class="table table-hover mt-3" style="display: none" data-bind="visible: filteredDetailItem().length >0">
+	<tfoot data-bind="visible: filteredDetailItem().length > 1">
+		<tr class="font-weight-bold">
+			<td class="text-right">
+				<span>Total</span>
+			</td>
+			<td class="text-right">
+				<span data-bind="text: sjp.formatRp(sjp.detailAmountSum(filteredDetailItem))"></span>
+			</td>
+		</tr>
+	</tfoot>
+	<tbody data-bind="foreach: filteredDetailItem">
+		<tr data-bind="click: $root.itemDialog.openEvent()">
+			<td>
+				<span data-bind="text: sjp.detailItemDesc($data)"></span>
+			</td>
+			<td class="text-right">
+				<span data-bind="text: sjp.formatRp($data.quantity * $data.price)"></span>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<legend class="mt-5">Faktur</legend>
+<div class="form-group row">
+	<label class="col-md-2 col-form-label">Pembayaran</label>
+	<div class="col-md-4">
+		<select class="form-control" data-bind="value: inputData.cash">
+			<option value="">-- pilih --</option>
+			<option value="true">Lunas</option>
+			<option value="false">Belum Lunas</option>
+		</select>
+	</div>
+
+	<label class="col-md-2 col-form-label">Tgl. Faktur</label>
+	<div class="col-md-4">
+		<input class="form-control" data-bind="datepicker: inputData.transDate">
+	</div>
+</div>
+<div class="form-group row" data-bind="visible: sjp.asBoolean(model.inputData.cash()) === false" style="display: none">
+	<label class="col-md-2 col-form-label">Pembeli</label>
+	<div class="col-md-4">
+		<input type="text" class="form-control" placeholder="Masukan nama pembeli .." data-bind="textInput: inputData.billTo">
+	</div>
+
+	<label class="col-md-2 col-form-label">No. Telpon</label>
+	<div class="col-md-4">
+		<input type="tel" class="form-control" data-bind="textInput: inputData.phone">
+	</div>
+</div>
+
+<div class="form-group row" data-bind="visible: sjp.asBoolean(model.inputData.cash()) === false" style="display: none">
+	<label class="col-md-2 col-form-label">Uang Muka</label>
+	<div class="col-md-4">
+		<input type="tel" class="form-control" data-bind="autoNumeric: inputData.downPayment">
+	</div>
+
+	<label class="col-md-2 col-form-label">Hutang</label>
+	<div class="col-md-4">
+		<input class="form-control" data-bind="value: sjp.formatRp(owing)" readonly></input>
+	</div>
+</div>
+
+<div class="form-group row">
+	<label class="col-md-2 col-form-label">Catatan</label>
+	<div class="col-md-10">
+		<textarea class="form-control" data-bind="textInput: inputData.note"></textarea>
+	</div>
+</div>
+
+<div class="modal fade" id="select-item-dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Pilih Barang</h5>
+				<button type="button" class="close" data-bind="click: selectItemDialog.closeEvent()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group row">
+					<div class="col-md-12">
+						<input type="text" class="form-control" placeholder="Masukkan nama barang.." data-bind="textInput: selectItemDialog.term">
+					</div>
+				</div>
+
+				<div style="height: 15rem;">
+					<div data-bind="visible: !selectItemDialog.isLoading()">
+						<table class="table table-sm table-hover">
+							<tbody data-bind="foreach: selectItemDialog.results">
+								<tr data-bind="click: $root.selectItemDialog.setSelectedEvent()">
+									<td>
+										<span data-bind="text: $data.text"></span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div data-bind="visible: selectItemDialog.isLoading()">
+						<div>loading..</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-sm btn-secondary" data-bind="click: selectItemDialog.inputNewData">Buat Barang Baru</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="input-item-dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Buat Barang Baru</h5>
+				<button type="button" class="close" data-bind="click: inputItemDialog.closeEvent()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group row">
+					<label class="col-md-4 col-form-label">Nama</label>
+					<div class="col-md-8">
+						<input class="form-control" data-bind="textInput: inputItemDialog.inputData.name">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-md-4 col-form-label">Departemen</label>
+					<div class="col-md-4">
+						<select class="form-control" data-bind="value: inputItemDialog.inputData.dept">
+							<option value="">-- pilih --</option>
+							<option value="A">Dept A</option>
+							<option value="B">Dept B</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-md-4 col-form-label">Catatan</label>
+					<div class="col-md-8">
+						<textarea class="form-control" data-bind="textInput: inputItemDialog.inputData.notes"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" data-bind="click: inputItemDialog.submitEvent()">Simpan</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="item-dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Jual Barang</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group row">
+					<label class="col-md-4 col-form-label">Barang</label>
+					<div class="col-md-8">
+						<a class="form-control btn-outline-secondary" data-bind="click: itemDialog.selectItem, textName: itemDialog.inputData.item"></a>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-md-4 col-form-label">Kuantitas</label>
+					<div class="col-md-8">
+						<input type="number" class="form-control" data-bind="textInput: itemDialog.inputData.quantity">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-md-4 col-form-label">Harga</label>
+					<div class="col-md-8">
+						<input type="tel" class="form-control" data-bind="autoNumeric: itemDialog.inputData.price">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-md-4 col-form-label">Total</label>
+					<div class="col-md-8">
+						<input type="text" class="form-control" data-bind="value: sjp.formatRp(itemDialog.amount)" readonly>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-bind="visible: itemDialog.isEditing, click: itemDialog.deleteEvent()">Hapus</button>
+				<button type="button" class="btn btn-success" data-bind="click: itemDialog.submitEvent()">Simpan</button>
+			</div>
+		</div>
+	</div>
+</div>

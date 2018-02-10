@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+	<title>Development Page</title>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="/static/loading.css">
+	<link rel="stylesheet" href="/static/toast.css">
+	<link rel="stylesheet" href="/static/sjp.css">
+
+	<style>
+	</style>
+
+</head>
+
+<body>
+	<main role="main" class="container">
+		<div id="page-content">
+			<h1>Development Page</h1>
+
+			<input data-bind="textInput: inputData.transDate">
+			<input data-bind="textInput: inputData.cash">
+			<input data-bind="textInput: inputData.billTo">
+			<input data-bind="textInput: inputData.phone">
+			<input data-bind="textInput: inputData.downPayment">
+
+			<textarea data-bind="textInput: inputData.note"></textarea>
+
+			<button data-bind="click: submitInput">Submit</button>
+		</div>
+
+	</main>
+
+	<div id="toast">Some text some message..</div>
+
+
+	<script src="/static/moment/moment-with-locales.js"></script>
+	<script src="/static/numeral/numeral.min.js"></script>
+	<script src="/static/jquery/jquery-3.2.1.min.js"></script>
+	<script src="/static/knockout/knockout-3.4.2.js"></script>
+	<script src="/static/tether/tether.min.js"></script>
+	<script src="/static/popper/popper.min.js"></script>
+	<script src="/static/bootstrap/bootstrap.min.js"></script>
+	<script src="/static/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
+	<script src="/static/sjp.js"></script>
+
+	<script src="/static/model/base-page.js"></script>
+	<script src="/static/model/base-list-page.js"></script>
+	<script src="/static/model/base-input-page.js"></script>
+	<script src="/static/model/base-select-dialog.js"></script>
+	<script src="/static/model/base-detail-dialog.js"></script>
+	<script src="/static/model/base-input-dialog.js"></script>
+
+	<script>
+		var contentData = {};
+	</script>
+
+	<script src="/static/model/test.js"></script>
+
+	<script>
+		const pageEl = $('#page-content');
+		if (pageEl.length < 1) {
+			alert('element id page-content not found');
+			throw 'fatal';
+		}
+
+		const model = new PageModel();
+
+		model.init().then(() => {
+			model.beforeBind();
+			ko.applyBindings(model, pageEl[0]);
+			model.afterBind()
+		}).catch((e) => {
+			sjp.showError(e, false);
+			model.abort(e);
+		});
+	</script>
+
+</body>
+
+</html>

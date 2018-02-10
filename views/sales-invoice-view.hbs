@@ -1,0 +1,57 @@
+<div class="form-group row">
+	<label class="col-md-2 col-form-label">Tgl. Faktur</label>
+	<div class="col-md-4">
+		<label class="form-control" data-bind="text: contentData.transDate"></label>
+	</div>
+
+	<label class="col-md-2 col-form-label">Nilai Penjualan</label>
+	<div class="col-md-4">
+		<label class="form-control" data-bind="text: sjp.formatRp(contentData.amount)"></label>
+	</div>
+</div>
+
+<div class="form-group row" data-bind="visible: contentData.cash === false">
+	<label class="col-md-2 col-form-label">Pembeli</label>
+	<div class="col-md-4">
+		<label class="form-control" data-bind="text: contentData.billTo"></label>
+	</div>
+
+	<label class="col-md-2 col-form-label">No. Telpon</label>
+	<div class="col-md-4">
+		<a class="form-control" data-bind="text: contentData.phone, attr: {href: sjp.phoneRef(contentData.phone)}"></a>
+	</div>
+</div>
+
+<div class="form-group row" data-bind="visible: sjp.isBlank(contentData.note) === false">
+	<label class="col-md-2 col-form-label">Catatan</label>
+	<div class="col-md-10">
+		<p class="form-control text-pre-wrap" data-bind="text: contentData.note"></p>
+	</div>
+</div>
+
+<legend>Rincian Barang</legend>
+
+<table class="table mt-3">
+	<tbody data-bind="foreach: contentData.detailItem">
+		<tr>
+			<td>
+				<span data-bind="text: sjp.detailItemDesc($data)"></span>
+			</td>
+			<td class="text-right">
+				<span data-bind="text: sjp.formatRp($data.amount)"></span>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="dropdown">
+	<button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+	 aria-expanded="false">
+		Action
+	</button>
+	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		<a class="dropdown-item" href="#">Action</a>
+		<a class="dropdown-item" href="#">Another action</a>
+		<a class="dropdown-item" href="#">Something else here</a>
+	</div>
+</div>

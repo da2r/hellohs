@@ -1,0 +1,36 @@
+<div class="row mb-3">
+	<div class="col-sm-4">
+		<div class="input-group">
+			<input type="search" class="form-control" data-bind="textInput: filterData.term, onReturnKey: search">
+			<button class="input-group-addon" title="Pencarian" data-bind="click: search">
+				<i class="fa fa-search"></i>
+			</button>
+		</div>
+	</div>
+	<div class="col-sm-8 text-right">
+		<button class="btn btn-success" title="Data Baru" data-bind="click: insert">
+			<i class="fa fa-plus"></i>
+		</button>
+
+		<button class="btn btn-info" title="Filter Data" data-bind="click: null">
+			<i class="fa fa-filter"></i>
+		</button>
+
+		<a href="javascript: location.reload()" class="btn btn-secondary" title="Refresh halaman">
+			<i class="fa fa-refresh"></i>
+		</a>
+	</div>
+</div>
+
+<table class="table table-sm table-hover">
+	<thead>
+		<th>Pelanggan</th>
+		<th>Telp.</th>
+	</thead>
+	<tbody data-bind="foreach: contentData.data">
+		<tr data-bind="click: $root.onClickEvent()">
+			<td data-bind="text: $data.name"></td>
+			<td data-bind="text: $data.phone"></td>
+		</tr>
+	</tbody>
+</table>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <title>{{title}}</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/toast.css">
+    <link rel="stylesheet" href="/static/loading.css">
+    <link rel="stylesheet" href="/static/sjp.css">
+
+    <style>
+        html {
+                {
+                    {
+                    !-- font-size: 21px;
+                    --
+                }
+            }
+        }
+
+        body {
+            padding-top: 4.5rem;
+        }
+
+        .select2-selection__rendered {
+            line-height: 36px !important;
+        }
+
+        .select2-selection {
+            height: 38px !important;
+        }
+
+        .select2-selection__arrow {
+            height: 38px !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <nav class="bg-dark fixed-top sjp-nav">
+        <div class="container" style="position: relative;">
+            <button class="btn btn-outline-info float-left" onclick="history.back()">&#8249; Back</button>
+            {{#if showSubmitButton}}
+            <button class="btn btn-outline-success float-right" onclick="model.submit()">&#10003; Save</button>
+            {{/if}} 
+            {{#if showMenuButton}}             
+            {{/if}}
+            <legend style="text-align: center; margin: 0; color: #fff">{{title}}</legend>
+        </div>
+    </nav>
+
+    <main id="page-body" role="main" class="container" style="display: none">
+        ##body##
+    </main>
+
+    <div id="page-loadmask">
+        <i class="fa fa-circle-o-notch fa-spin fa-5x fa-fw"></i>
+    </div>
+
+    <div id="toast"></div>
+
+    <div id="window-loadmask" style="display: none;">
+        <i id="window-loadmask-icon" class="fa fa-circle-o-notch fa-spin fa-5x fa-fw"></i>
+    </div>
+
+
+    <script src="/static/moment/moment-with-locales.js"></script>
+    <script src="/static/numeral/numeral.min.js"></script>
+    <script src="/static/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/static/knockout/knockout-3.4.2.js"></script>
+    <script src="/static/tether/tether.min.js"></script>
+    <script src="/static/popper/popper.min.js"></script>
+    <script src="/static/bootstrap/bootstrap.min.js"></script>
+    <script src="/static/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="/static/autonumeric/autoNumeric.min.js"></script>
+
+    <script src="/static/sjp.js"></script>
+
+    <script src="/static/model/base-page.js"></script>
+    <script src="/static/model/base-list-page.js"></script>
+    <script src="/static/model/base-input-page.js"></script>
+    <script src="/static/model/base-view-page.js"></script>
+    <script src="/static/model/base-select-dialog.js"></script>
+    <script src="/static/model/base-detail-dialog.js"></script>
+    <script src="/static/model/base-input-dialog.js"></script>
+
+    <script src="{{pageJS}}"></script>
+
+    <script>
+        if (typeof PageModel != 'undefined') {
+            const model = window.model = new PageModel();
+
+            const pageEl = $('#page-body');
+            if (pageEl.length < 1) {
+                alert('element id page-body not found');
+                throw 'fatal';
+            }
+
+            async function windowInit() {
+                await model.init();
+                await model.beforeBind();
+
+                ko.applyBindings(model, pageEl[0]);
+
+                model.afterBind();
+
+                sjp.showPageBody();
+                model.focusOnInput();
+            }
+
+            windowInit().catch((e) => {
+                sjp.showError(e, false);
+                model.abort(e);
+            });
+        } else {
+            sjp.showPageBody();
+        }
+    </script>
+
+</body>
+
+</html>

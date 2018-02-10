@@ -1,0 +1,18 @@
+<legend>{{contentData.reportTitle}}</legend>
+
+<table class="table table-bordered table-responsive-md mb-5">
+	<thead>
+		<th></th>
+		<th class="text-right">Dept A</th>
+		<th class="text-right">Dept B</th>
+		<th class="text-right">Total</th>
+	</thead>
+	<tbody data-bind="foreach: contentData.reportData">
+		<tr>
+			<td class="font-weight-bold" data-bind="text: moment($data.month, 'MM').format('MMMM')"></td>
+			<td class="text-right" data-bind="text: sjp.formatRp($data.A)"></td>
+			<td class="text-right" data-bind="text: sjp.formatRp($data.B)"></td>
+			<td class="text-right font-weight-bold" data-bind="text: sjp.formatRp($data.total)"></td>
+		</tr>
+	</tbody>
+</table>

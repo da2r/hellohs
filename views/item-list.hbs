@@ -1,0 +1,25 @@
+<div class="row mb-3">
+	<div class="col-sm-12 text-right">
+		<button class="btn btn-success" title="Data Baru" data-bind="click: insert">
+			<i class="fa fa-plus"></i>
+		</button>
+
+		<a href="javascript: location.reload()" class="btn btn-secondary" title="Refresh halaman">
+			<i class="fa fa-refresh"></i>
+		</a>
+	</div>
+</div>
+
+<table class="table table-sm table-hover table-responsive-md">
+	<thead>
+		<th>Nama Barang</th>
+		<th>Dept</th>
+	</thead>
+	<tbody data-bind="foreach: contentData.data">
+		<tr data-bind="click: $root.onClickEvent()">
+			<td data-bind="text: $data.name"></td>
+			<td data-bind="text: $data.dept"></td>
+		</tr>
+	</tbody>
+
+</table>
